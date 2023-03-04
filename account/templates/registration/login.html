@@ -1,0 +1,40 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Cambridge Note - Log In</title>
+
+</head>
+
+{% extends "base.html" %}
+
+{% block header %}
+
+    <div class='jumbotron'>
+
+        <h1>Log In To Your Account</h1> 
+
+    </div>
+
+{% endblock header %}
+
+{% block content %}
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{form.as_p}}
+
+    <br><a href="{% url 'account:password_reset' %}">Forgot Password?</a><br><br>
+
+    <button name="submit" class="btn btn-primary">Login</button>
+
+</form><br>
+
+<div style="text-align: center;">
+New User? <a href="{% url 'account:register' %}" class="btn btn-primary"> Create An Account</a><br>
+</div>
+
+{%endblock%}

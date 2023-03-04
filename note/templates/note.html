@@ -1,0 +1,76 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Cambridge Note - Notes</title>
+{% extends "base.html" %}
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" rel="stylesheet">
+  <script src="//code.jquery.com/jquery.min.js"></script>
+  <script crossorigin="anonymous" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+{% block header %}
+
+    <div class='jumbotron'>
+
+        <h1>Notes</h1> 
+
+    </div>
+
+{% endblock header %}
+
+{% block content %}
+
+    <form method="POST">
+
+    {% csrf_token %}
+
+    {{form.as_p}}
+
+    <button name="submit" class="btn btn-primary">Search</button>
+
+    </form>
+
+<br><hr><br>
+
+<a href="{% url 'note:addnote' %}" class="btn btn-primary">Add New Note </a> <a href="{% url 'note:draft' %}" class="btn btn-primary"> View Drafts</a>
+
+<br><br><br>
+
+{% for data in dataset %}
+
+<div class="blog-main">
+
+  <div class="blog-post">
+    <h1><div class="dropdown">
+      <span style="font-size:30px" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">&#9776;</span>
+      <span class="dropdown-menu">
+        <a href="{% url 'note:editnote' _id=data.id %}" class="btn btn-default">Edit Note</a><br><br><a href="{% url 'note:delete' _id=data.id %}" class="btn btn-default">Delete Note</a>
+      </span>
+    </div>
+    <span class="blog-post-title">{{data.topic}}</span></h1>
+    <p class="blog-post-meta" >{{data.date_updated}}</p>
+    <p>{{data.entry|slice:":300"}} <a href = "{% url 'note:detailnote' _id=data.id %}" class="btn btn-danger"> Read More &rarr;</a></p><br><hr>
+{%empty%}
+      <h2 style="text-align:center">You haven't added any Note</h2>
+{%endfor %}
+  </div>
+</div>
+
+{% if dataset.has_other_pages %}
+  <nav aria-label="Page navigation container">
+  <ul class="pagination justify-content-center">
+    {% if dataset.has_previous %}
+    <a href="?page={{ dataset.previous_page_number }}" class="page-link btn btn-primary">&laquo; Previous Page  </a>
+    {% endif %}
+    {% if dataset.has_next %}
+    <a href="?page={{ dataset.next_page_number }}" class="page-link btn btn-primary"> Next Page &raquo;  </a>
+   {% endif %}
+  </ul>
+  </nav>
+</div>
+{% endif %}
+
+{% endblock%}

@@ -12,10 +12,11 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 
 def password_reset_request(request):
+	msg = None
+	form = PasswordResetForm(request.POST or None)
 	if request.method == "POST":
-		password_reset_form = PasswordResetForm(request.POST)
-		if password_reset_form.is_valid():
-			data = password_reset_form.cleaned_data['email']
+		if form.is_valid():
+			data = form.cleaned_data['email']
 			associated_users = User.objects.filter(Q(email=data))
 			if associated_users.exists():
 				for user in associated_users:
@@ -36,8 +37,9 @@ def password_reset_request(request):
 					except BadHeaderError:
 						return HttpResponse('Invalid header found.')
 					return redirect ("/password_reset/done/")
-	form = PasswordResetForm()
-	return render(request=request, template_name="password_reset.html", context={"form":form})
+			else:
+				msg = 'Email does not exist'
+	return render(request=request, template_name="password_reset.html", context={"form":form, 'msg':msg})
 
 class register(CreateView):
     model = User  

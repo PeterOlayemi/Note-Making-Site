@@ -10,7 +10,7 @@ A site that allows authenticated users to make, edit or delete notes (draft or p
 ## Installation
 ### 1. Clone Repository & Install Packages
 
-- git clone https://github.com/PeterOlayemi/Poll-Site.git
+- git clone https://github.com/PeterOlayemi/Note-Making-Site.git
 - pip install -r requirements.txt
 
 ### 2. Migrate & Start Server
